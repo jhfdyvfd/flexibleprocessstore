@@ -1,28 +1,17 @@
-function reorderList(head) {
-  if (!head || !head.next) return;
-  let slow = head;
-  let fast = head;
-  while (fast.next && fast.next.next) {
-    slow = slow.next;
-    fast = fast.next.next;
+function isIsomorphic(s, t) {
+  if (s.length !== t.length) return false;
+  const sMap = new Map();
+  const tMap = new Map();
+  for (let i = 0; i < s.length; i++) {
+    const sChar = s[i];
+    const tChar = t[i];
+    if (
+      (sMap.has(sChar) && sMap.get(sChar) !== tChar) ||
+      (tMap.has(tChar) && tMap.get(tChar) !== sChar)
+    )
+      return false;
+    sMap.set(sChar, tChar);
+    tMap.set(tChar, sChar);
   }
-  let prev = null;
-  let curr = slow.next;
-  slow.next = null;
-  while (curr) {
-    const next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
-  }
-  let first = head;
-  let second = prev;
-  while (second) {
-    const nextFirst = first.next;
-    const nextSecond = second.next;
-    first.next = second;
-    second.next = nextFirst;
-    first = nextFirst;
-    second = nextSecond;
-  }
+  return true;
 }
