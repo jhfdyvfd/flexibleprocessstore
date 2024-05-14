@@ -1,10 +1,22 @@
-function coinChange(coins, amount) {
-  const dp = new Array(amount + 1).fill(amount + 1);
-  dp[0] = 0;
-  for (const coin of coins) {
-    for (let i = coin; i <= amount; i++) {
-      dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+function removeKdigits(num, k) {
+  const stack = [];
+  for (const digit of num) {
+    while (k > 0 && stack.length && stack[stack.length - 1] > digit) {
+      stack.pop();
+      k--;
     }
+    stack.push(digit);
   }
-  return dp[amount] > amount ? -1 : dp[amount];
+  while (k > 0) {
+    stack.pop();
+    k--;
+  }
+  let result = "";
+  let leadingZero = true;
+  for (const digit of stack) {
+    if (leadingZero && digit === "0") continue;
+    leadingZero = false;
+    result += digit;
+  }
+  return result || "0";
 }
